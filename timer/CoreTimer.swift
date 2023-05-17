@@ -7,6 +7,7 @@
 
 import UIKit
 
+// ядро таймера 
 class FastingTimer: UIView {
     
     private let beforeStartDateTimer = BeforeStartDateTimer()
@@ -31,7 +32,7 @@ class FastingTimer: UIView {
             UserDefaults.standard.set(newValue, forKey: "isIntervalFirst")
         }
     }
-    
+    // рисуем бэкграунд слой круга таймера
     func drawBgShape(view: UIView) {
         let path = UIBezierPath(arcCenter: CGPoint(x: view.frame.midX / 1.605, y: view.frame.midY / 1.58), radius: 110, startAngle: -90.degreesToRadians, endAngle: 270.degreesToRadians, clockwise: true).cgPath
         bgShapeLayer.path = path.resized(to: view.frame)
@@ -46,6 +47,7 @@ class FastingTimer: UIView {
         view.layer.addSublayer(bgShapeLayer)
     }
     
+    // рисуем линию для отображения прошедшего времени
     func drawTimeLeftShape(view: UIView, strokeColor: CGColor) {
         let path = UIBezierPath(arcCenter: CGPoint(x: view.frame.midX / 1.605, y: view.frame.midY / 1.58), radius: 110, startAngle: -90.degreesToRadians, endAngle: 270.degreesToRadians, clockwise: true).cgPath
         timeLeftShapeLayer.path = path.resized(to: view.frame)
@@ -54,7 +56,7 @@ class FastingTimer: UIView {
         timeLeftShapeLayer.lineWidth = 17
         view.layer.addSublayer(timeLeftShapeLayer)
     }
-    
+    // добавляем лейблы
     func addTimeLabel(view: UIView, tView: UIView, iView: UIView, textForInfo: String) {
         timeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tView.viewWidth, height: tView.viewHeight))
         timeLabel.textAlignment = .center
@@ -78,6 +80,7 @@ class FastingTimer: UIView {
         iView.addSubview(infoLabel)
     }
     
+    // при отсутствии таймера выводим в лейбл информацию
     func configureInfoLabelForNoTimer(hView: UIView, pView: UIView) {
         infoLabel = UILabel(frame: CGRect(x: 0, y: 0, width: hView.viewWidth, height: hView.viewHeight))
         infoLabel.backgroundColor = .clear
@@ -120,21 +123,25 @@ class FastingTimer: UIView {
         infoLabel.text = ""
     }
     
+   // старт таймера
     func startFeastingTimer(view: UIView, fastStatusView: UIView, fastTimeView: UIView, interval: TimeInterval, textForInfo: String, strokeColor: CGColor) {
         killTimer()
         view.backgroundColor = .clear
+        // рисуем UI через GCD
         DispatchQueue.main.async { [self] in
             drawBgShape(view: view)
             drawTimeLeftShape(view: view, strokeColor: strokeColor)
             addTimeLabel(view: view, tView: fastTimeView, iView: fastStatusView, textForInfo: textForInfo)
         }
-         
+        
+        // достаем стабильное значение интервалов для дальнейшего подсчета 
         let stableToFirstFastInterval = UserDefaults.standard.double(forKey: "stableToFirstFastInterval")
         let stableToLastFastInterval = UserDefaults.standard.double(forKey: "stableToLastFastInterval")
         timeLeft = interval
         
+        // считаем интервалы и заполняем цветом линию прогресса
         if isIntervalFirst == true {
-            currentStrokeFill = abs(1 - (timeLeft / stableToFirstFastInterval)) // FIXME: - Stroke not drawing if app is in the background, try smth with sceneDidEnterForeground
+            currentStrokeFill = abs(1 - (timeLeft / stableToFirstFastInterval)) 
         } else if isIntervalFirst == false {
             currentStrokeFill = abs(1 - (timeLeft / stableToLastFastInterval))
         }
@@ -152,6 +159,7 @@ class FastingTimer: UIView {
         feastTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateFeastingTime), userInfo: nil, repeats: true)
     }
     
+    // функция обновляет часы/минуты/секунды или останавливает таймер и передает инфу делегатам когда timeLeft < 0
     @objc func updateFeastingTime() {
         if timeLeft > 0 {
             timeLeft = endTime?.timeIntervalSinceNow ?? 0
