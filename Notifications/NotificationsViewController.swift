@@ -12,6 +12,7 @@ class NotificationsViewController: UIViewController {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+    // внутренняя структура с UI компонентами
     private let c = Components()
     
     private var isOneHourBeforeEatingNotificationGranted: Bool {
@@ -80,13 +81,6 @@ class NotificationsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         tableView.tableHeaderView = UIView()
         tableView.sectionHeaderTopPadding = 0.0
-        
-        print(isOneHourBeforeEatingNotificationGranted)
-        print(isEatingTimeStartNotificationGranted)
-        print(isOneHourBeforeFastingNotificationGranted)
-        print(isFastingTimeStartNotificationGranted)
-        print(isWaterReminderNotificationGranted)
-        print(isChallengeUpdateNotificationGranted)
     }
 }
 
@@ -98,6 +92,7 @@ extension NotificationsViewController: UITableViewDelegate {
     }
 }
 
+// создаем cell с UISwitch для каждого уведомления
 extension NotificationsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
@@ -162,6 +157,7 @@ extension NotificationsViewController: UITableViewDataSource {
         return cell
     }
     
+    // планируем пуши по переключению UISwitch
     @objc func switchChanged(_ sender: UISwitch!) {
         let notifications = NotificationsCenter()
         switch sender.tag {
