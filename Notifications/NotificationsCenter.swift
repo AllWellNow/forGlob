@@ -8,6 +8,8 @@
 import UIKit
 import UserNotifications
 
+// В данном файле создаем, регистрируем и планируем отправку пушей, UI экран для уведомлений находится в файле NotificationsController.swift
+
 class NotificationsCenter {
     private var isOneHourBeforeEatingNotificationGranted: Bool {
         get {
