@@ -7,6 +7,7 @@
 
 import UIKit
 
+// Структура считает изменения веса юзера
 struct WeightTracker {
     
     var leveling = LevelingLogic()
@@ -49,19 +50,14 @@ struct WeightTracker {
         UserDefaults.standard.set(difference, forKey: "stableWeightDifference")
     }
     
+    // функция обновляет данные юзера, переводит их в проценты для заполнения прогресс бара, если бар заполнен сбрасывает его и отправляет запрос добавить лвлпоинты
     mutating func updateWeight(_ progressView: UIProgressView, addLevelPointsTo levelProgressView: UIProgressView = .init(), newWeight: String, progressLabel: UILabel) {
         let updatedDifference = (startingWeight ?? .nan) - Double(newWeight)!
         let rawPercentage = updatedDifference / (weightDifference ?? .nan)
-        print("STARTING \((startingWeight ?? .nan))")
-        print("UPDATEDdiff \(updatedDifference)")
-        print("WEIGHTDIFF \((weightDifference ?? .nan))")
         let percentage = abs(rawPercentage)
-        print("RAW \(rawPercentage)")
-        print("percentage \(percentage)")
         let prettyPercent = toPercent.format(percentage)
         self.prettyPercent = prettyPercent
         if percentage < 1 {
-            print("check")
             progressView.setProgress(Float(percentage), animated: true)
             currentProgress = progressView.progress
             UserDefaults.standard.set(currentProgress, forKey: "goalProgress")
@@ -71,7 +67,7 @@ struct WeightTracker {
             goalWasReached(progressView, addLevelPointsTo: levelProgressView, progressLabel: progressLabel)
         }
     }
-    
+    // сброс всего
     mutating func resetAll(_ weightProgressView: UIProgressView) {
         UserDefaults.standard.set("NA", forKey: "startingWeight")
         UserDefaults.standard.set("NA", forKey: "goalWeight")
@@ -80,13 +76,13 @@ struct WeightTracker {
         UserDefaults.standard.set(currentProgress, forKey: "goalProgress")
         UserDefaults.standard.set("", forKey: "prettyPecent")
     }
-    
+    // цель достигнута
     mutating func goalWasReached(_ weightProgressView: UIProgressView, addLevelPointsTo levelProgressView: UIProgressView, progressLabel: UILabel) {
         wasGoalReached = true
         resetAll(weightProgressView)
         leveling.addLevelPoints(points: 0.25, progressView: levelProgressView)
     }
-    
+    // сбросить только прогресс
     mutating func resetWeightProgress(_ weightProgressView: UIProgressView) {
         weightProgressView.setProgress(0, animated: true)
         currentProgress = 0
