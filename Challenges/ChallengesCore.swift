@@ -202,14 +202,16 @@ func challengeWasCancelled(challengeID: Int) {
         self.challengesTableView.reloadData()
     }
 
-// функция передает данные о выбранном испытании экрану испытаний (есть в этом фолдере) и экран отображает соотвествующий контент
+// функция передает данные о выбранном испытании нужному экрану испытаний (оба есть в этом фолдере) и экран отображает соотвествующий контент
 func itemWasTapped(with viewModel: ChallengesCollectionViewCellViewModel) {
+        // если испытание уже активно, вызывается экран с таймером до окончания
         if activeChallenges.contains(viewModel.id) {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "challengeTimerController") as! ChallengeTimerViewController
             vc.modalPresentationStyle = .fullScreen
             vc.delegate = self
             vc.challengeNumber = viewModel.id
             self.present(vc, animated: true, completion: nil)
+         // если испытание не активно, вызывается экран с выбором интервала и кнопкой старт
         } else {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "challengeCardController") as! ChallengeCardViewController
             vc.modalPresentationStyle = .fullScreen
