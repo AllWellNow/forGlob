@@ -220,3 +220,61 @@ func itemWasTapped(with viewModel: ChallengesCollectionViewCellViewModel) {
             self.present(vc, animated: true, completion: nil)
         }
 }
+
+// на экране испытания функция ниже заполняет UI контентом в зависимости от выбранного челленджа
+  private func fillChallengeContent() {
+        if challengeNumber == 1 {
+            if let p1 = challenge1Period {
+                imageView.image = K().goVeganChallengeImage
+                headerTextLabel.text = K().goVeganChallengeHeader
+                paragraphTextLabel.text = K().goVeganChallengeDescriptionNotDone
+                challengeTextLabel.text = K().challengeTimeLeftLabel
+                challengesTimer.startTimer(view: timerView, numberOfDays: 2, targetDate: p1)
+            }
+        }
+        if challengeNumber == 2 {
+            if let p2 = challenge2Period {
+                imageView.image = K().noSmokingChallengeImage
+                headerTextLabel.text = K().noSmokingChallengeHeader
+                paragraphTextLabel.text = K().noSmokingChallengeDescriptionNotDone
+                challengeTextLabel.text = K().challengeTimeLeftLabel
+                challengesTimer.startTimer(view: timerView, numberOfDays: 2, targetDate: p2)
+            }
+        }
+        if challengeNumber == 3 {
+            if let p3 = challenge3Period {
+                imageView.image = K().noCoffeeChallengeImage
+                headerTextLabel.text = K().noCoffeeChallengeHeader
+                paragraphTextLabel.text = K().noCoffeeChallengeDecriptionNotDone
+                challengeTextLabel.text = K().challengeTimeLeftLabel
+                challengesTimer.startTimer(view: timerView, numberOfDays: 2, targetDate: p3)
+            }
+        }
+        if challengeNumber == 4 {
+            if let p4 = challenge4Period {
+                imageView.image = K().noAlcoholChallengeImage
+                headerTextLabel.text = K().noAlcoholChallengeHeader
+                paragraphTextLabel.text = K().noAlcoholChallengeDescriptionNotDone
+                challengeTextLabel.text = K().challengeTimeLeftLabel
+                challengesTimer.startTimer(view: timerView, numberOfDays: 2, targetDate: p4)
+            }
+        }
+        if challengeNumber == 5 {
+            if let p5 = challenge5Period {
+                imageView.image = K().noFastFoodChallengeImage
+                headerTextLabel.text = K().noFastFoodChallengeHeader
+                paragraphTextLabel.text = K().noFastFoodChalengeDescriptionNotDone
+                challengeTextLabel.text = K().challengeTimeLeftLabel
+                challengesTimer.startTimer(view: timerView, numberOfDays: 2, targetDate: p5)
+            }
+        }
+        if challengeNumber == 6 {
+            if let p6 = challenge6Period {
+                imageView.image = K().noSugarChallengeImage
+                headerTextLabel.text = K().noSugarChallengeHeader
+                paragraphTextLabel.text = K().noSugarChallengeDescriptionNotDone
+                challengeTextLabel.text = K().challengeTimeLeftLabel
+                challengesTimer.startTimer(view: timerView, numberOfDays: 2, targetDate: p6)
+            }
+        }
+    }
