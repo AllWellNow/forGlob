@@ -9,6 +9,7 @@ import UIKit
 import JDFlipNumberView
 import TinyConstraints
 
+// логика таймера активного испытания, использована obj-c библиотека JDFlipNumberView
 struct ChallengesTimer {
     var timer: JDDateCountdownFlipView?
     
